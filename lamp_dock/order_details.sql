@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- ホスト: mysql
--- 生成日時: 2021 年 3 月 31 日 10:12
+-- 生成日時: 2021 年 3 月 31 日 14:57
 -- サーバのバージョン： 5.7.33
 -- PHP のバージョン: 7.4.15
 
@@ -29,10 +29,20 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `order_details` (
   `order_id` int(11) NOT NULL COMMENT 'ordersのorder_idと紐付け',
-  `item_name` varchar(20) NOT NULL COMMENT '商品名',
+  `item_id` int(11) NOT NULL COMMENT '商品番号（itemsのitem_idと紐付け）',
   `price` int(11) NOT NULL COMMENT '購入時の価格',
   `amount` int(11) NOT NULL COMMENT '購入数'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- ダンプしたテーブルのインデックス
+--
+
+--
+-- テーブルのインデックス `order_details`
+--
+ALTER TABLE `order_details`
+  ADD PRIMARY KEY (`order_id`,`item_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
