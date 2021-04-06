@@ -234,7 +234,7 @@ function get_order($db, $order_id, $user_id)
       orders
     WHERE order_id = ? AND user_id = ?
   ";
-  return fetch_query($db, $sql, [$user_id]);
+  return fetch_query($db, $sql, [$order_id, $user_id]);
 }
 
 function get_orders($db, $user_id)
@@ -280,7 +280,8 @@ function get_all_orders($db)
   return fetch_all_query($db, $sql);
 }
 
-function get_order_details($db, $order_id, $user_id){
+function get_order_details($db, $order_id, $user_id)
+{
   $sql = "
     SELECT
       items.name,
@@ -290,15 +291,18 @@ function get_order_details($db, $order_id, $user_id){
       order_details
     INNER JOIN items
     ON order_details.item_id = items.item_id
+    INNER JOIN orders
+    ON order_details.order_id = orders.order_id
     WHERE 
-      order_id = ?
+      order_details.order_id = ?
     AND
       user_id = ?
   ";
-return fetch_all_query($db, $sql, [$order_id], [$user_id]);
+  return fetch_all_query($db, $sql, [$order_id, $user_id]);
 }
 
-function get_all_order_details($db, $order_id){
+function get_all_order_details($db, $order_id)
+{
   $sql = "
     SELECT
       items.name,
