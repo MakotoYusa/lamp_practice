@@ -223,6 +223,20 @@ function insert_order_details($db, $order_id, $item_id, $price, $amount)
   return execute_query($db, $sql, [$order_id, $item_id, $price, $amount]);
 }
 
+function get_order($db, $order_id, $user_id)
+{
+  $sql = "
+    SELECT
+      order_id,
+      total_fee,
+      create_datetime
+    FROM
+      orders
+    WHERE order_id = ? AND user_id = ?
+  ";
+  return fetch_query($db, $sql, [$user_id]);
+}
+
 function get_orders($db, $user_id)
 {
   $sql = "
@@ -238,6 +252,20 @@ function get_orders($db, $user_id)
   return fetch_all_query($db, $sql, [$user_id]);
 }
 
+function get_all_order($db, $order_id)
+{
+  $sql = "
+    SELECT
+      order_id,
+      total_fee,
+      create_datetime
+    FROM
+      orders
+    WHERE order_id = ?
+  ";
+  return fetch_query($db, $sql, [$order_id]);
+}
+
 function get_all_orders($db)
 {
   $sql = "
@@ -250,4 +278,38 @@ function get_all_orders($db)
     ORDER BY create_datetime DESC
   ";
   return fetch_all_query($db, $sql);
+}
+
+function get_order_details($db, $order_id, $user_id){
+  $sql = "
+    SELECT
+      items.name,
+      order_details.price,
+      order_details.amount
+    FROM
+      order_details
+    INNER JOIN items
+    ON order_details.item_id = items.item_id
+    WHERE 
+      order_id = ?
+    AND
+      user_id = ?
+  ";
+return fetch_all_query($db, $sql, [$order_id], [$user_id]);
+}
+
+function get_all_order_details($db, $order_id){
+  $sql = "
+    SELECT
+      items.name,
+      order_details.price,
+      order_details.amount
+    FROM
+      order_details
+    INNER JOIN items
+    ON order_details.item_id = items.item_id
+    WHERE 
+      order_id = ?
+  ";
+  return fetch_all_query($db, $sql, [$order_id]);
 }
