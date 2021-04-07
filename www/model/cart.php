@@ -123,7 +123,7 @@ function purchase_carts($db, $carts)
       set_error($cart['name'] . 'の購入に失敗しました。');
     }
   }
-  if(insert_orders($db, $carts[0]['user_id'], sum_carts($carts)) === false){
+  if (insert_orders($db, $carts[0]['user_id'], sum_carts($carts)) === false) {
     set_error('履歴データの作成に失敗しました。');
   }
 
@@ -221,4 +221,99 @@ function insert_order_details($db, $order_id, $item_id, $price, $amount)
   ";
 
   return execute_query($db, $sql, [$order_id, $item_id, $price, $amount]);
+}
+
+function get_order($db, $order_id, $user_id)
+{
+  $sql = "
+    SELECT
+      order_id,
+      total_fee,
+      create_datetime
+    FROM
+      orders
+    WHERE order_id = ? AND user_id = ?
+  ";
+  return fetch_query($db, $sql, [$order_id, $user_id]);
+}
+
+function get_orders($db, $user_id)
+{
+  $sql = "
+    SELECT
+      order_id,
+      total_fee,
+      create_datetime
+    FROM
+      orders
+    WHERE user_id = ?
+    ORDER BY create_datetime DESC
+  ";
+  return fetch_all_query($db, $sql, [$user_id]);
+}
+
+function get_all_order($db, $order_id)
+{
+  $sql = "
+    SELECT
+      order_id,
+      total_fee,
+      create_datetime
+    FROM
+      orders
+    WHERE order_id = ?
+  ";
+  return fetch_query($db, $sql, [$order_id]);
+}
+
+function get_all_orders($db)
+{
+  $sql = "
+    SELECT
+      order_id,
+      total_fee,
+      create_datetime
+    FROM
+      orders
+    ORDER BY create_datetime DESC
+  ";
+  return fetch_all_query($db, $sql);
+}
+
+function get_order_details($db, $order_id, $user_id)
+{
+  $sql = "
+    SELECT
+      items.name,
+      order_details.price,
+      order_details.amount
+    FROM
+      order_details
+    INNER JOIN items
+    ON order_details.item_id = items.item_id
+    INNER JOIN orders
+    ON order_details.order_id = orders.order_id
+    WHERE 
+      order_details.order_id = ?
+    AND
+      user_id = ?
+  ";
+  return fetch_all_query($db, $sql, [$order_id, $user_id]);
+}
+
+function get_all_order_details($db, $order_id)
+{
+  $sql = "
+    SELECT
+      items.name,
+      order_details.price,
+      order_details.amount
+    FROM
+      order_details
+    INNER JOIN items
+    ON order_details.item_id = items.item_id
+    WHERE 
+      order_id = ?
+  ";
+  return fetch_all_query($db, $sql, [$order_id]);
 }
