@@ -231,7 +231,7 @@ function is_valid_item_status($status)
 function sort_new_arrival($db, $is_open = false)
 {
   $sql = '
-    SELECT
+  SELECT
     item_id, 
     name,
     stock,
@@ -240,13 +240,16 @@ function sort_new_arrival($db, $is_open = false)
     status
   FROM
     items
-  ORDER BY created DESC
 ';
   if ($is_open === true) {
     $sql .= '
     WHERE status = 1
   ';
   }
+
+  $sql .='
+  ORDER BY created DESC
+  ';
 
   return fetch_all_query($db, $sql);
 }
@@ -254,7 +257,7 @@ function sort_new_arrival($db, $is_open = false)
 function sort_low_price($db, $is_open = false)
 {
   $sql = '
-    SELECT
+  SELECT
     item_id, 
     name,
     stock,
@@ -263,13 +266,16 @@ function sort_low_price($db, $is_open = false)
     status
   FROM
     items
-  ORDER BY price
 ';
   if ($is_open === true) {
     $sql .= '
     WHERE status = 1
   ';
   }
+
+  $sql .='
+  ORDER BY price ASC
+  ';
 
   return fetch_all_query($db, $sql);
 }
@@ -277,7 +283,7 @@ function sort_low_price($db, $is_open = false)
 function sort_high_price($db, $is_open = false)
 {
   $sql = '
-    SELECT
+  SELECT
     item_id, 
     name,
     stock,
@@ -286,13 +292,16 @@ function sort_high_price($db, $is_open = false)
     status
   FROM
     items
-  ORDER BY price DESC
 ';
   if ($is_open === true) {
     $sql .= '
     WHERE status = 1
   ';
   }
+
+  $sql .='
+  ORDER BY price DESC
+  ';
 
   return fetch_all_query($db, $sql);
 }

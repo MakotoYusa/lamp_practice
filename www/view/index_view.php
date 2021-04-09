@@ -16,15 +16,17 @@
     <h1>商品一覧</h1>
     <?php include VIEW_PATH . 'templates/messages.php'; ?>
 
-    <form action="index_sort.php" method="get">
-      <select name="sort_type">
-        <option value="new_arrival">新着順</option>
-        <option value="low_price">価格が安い順</option>
-        <option value="high_price">価格が高い順</option>
-      </select>
-      <input type="submit" value="並び替え" class="btn">
-      <input type="hidden" name="token" value="<?php print $token ?>">
-    </form>
+    <div class="sort">
+      <form method="post">
+        <select name="sort_type">
+          <option value="new_arrival">新着順</option>
+          <option value="low_price">価格が安い順</option>
+          <option value="high_price">価格が高い順</option>
+        </select>
+        <input type="submit" value="並び替え" class="btn">
+        <input type="hidden" name="action" value="sort">
+      </form>
+    </div>
 
     <div class="card-deck">
       <div class="row">
