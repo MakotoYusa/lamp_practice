@@ -16,15 +16,14 @@
     <h1>商品一覧</h1>
     <?php include VIEW_PATH . 'templates/messages.php'; ?>
 
-    <div class="sort">
-      <form method="post">
+    <div style="text-align:right;">
+      <form method="get">
         <select name="sort_type">
           <option value="new_arrival">新着順</option>
-          <option value="low_price">価格が安い順</option>
-          <option value="high_price">価格が高い順</option>
+          <option value="low_price" <?php if($sort_type === 'low_price') echo 'selected' ?>>価格が安い順</option>
+          <option value="high_price" <?php if($sort_type === 'high_price') echo 'selected' ?>>価格が高い順</option>
         </select>
         <input type="submit" value="並び替え" class="btn">
-        <input type="hidden" name="action" value="sort">
       </form>
     </div>
 
